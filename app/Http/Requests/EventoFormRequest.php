@@ -23,11 +23,21 @@ class EventoFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'titulo' => 'string|required', 
-            'descricao' => 'string', 
-            'data_evento' => 'date',
-            'user_id' => ''
-            
+            'titulo' => 'required|string|max:191',
+            'descricao' => 'required|string',
+            'data_evento' => 'nullable|date',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'titulo.required' => 'Informe o título do evento.',
+            'titulo.string' => 'O título deve ser um texto.',
+            'titulo.max' => 'O título deve ter no máximo 191 caracteres.',
+            'descricao.required' => 'Informe a descrição do evento.',
+            'descricao.string' => 'A descrição deve ser um texto.',
+            'data_evento.date' => 'Informe uma data válida para o evento.',
         ];
     }
 }
