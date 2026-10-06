@@ -18,9 +18,9 @@ class EventoController extends Controller
 
     public function show($id)
     {
-        $evento = Evento::find($id);
+        $evento = Evento::findOrFail($id);
 
-        $perguntas = Pergunta::all();
+        $perguntas = $evento->perguntas()->with('evento')->get();
 
         return view('eventos.show', compact('evento', 'perguntas'));
     }
@@ -43,6 +43,19 @@ class EventoController extends Controller
 
     public function create(){
         return view('eventos.create');
+    }
+
+    public function destroyPergunta($id, $perguntaId)
+    {
+        $evento = Evento::findOrFail($id);
+        $pergunta = $evento->perguntas()->findOrFail($perguntaId);
+
+        $this->authorize('delete', $pergunta);
+
+        $pergunta->delete();
+
+        return redirect()->route('eventos.show', $evento->id)
+            ->with('sucesso', 'Pergunta excluída com sucesso!');
     }
 
     public function store(EventoFormRequest $request){

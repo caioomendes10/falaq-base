@@ -43,6 +43,13 @@
                         <span>Status: <span class="badge bg-success">{{ $pergunta->status }}</span></span>
                         <span>{{ $pergunta->created_at->format('d/m/Y H:i') }}</span>
                     </div>
+                    @can('delete', $pergunta)
+                        <form action="{{ route('eventos.perguntas.destroy', [$evento->id, $pergunta->id]) }}" method="POST" class="mt-3">
+                            @csrf
+                            @method('DELETE')
+                            <x-danger-button>Excluir pergunta</x-danger-button>
+                        </form>
+                    @endcan
                 </div>
             </div>
         @empty
