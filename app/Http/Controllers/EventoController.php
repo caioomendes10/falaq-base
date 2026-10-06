@@ -22,6 +22,11 @@ class EventoController extends Controller
 
         $perguntas = Pergunta::where('evento_id', $evento->id)
             ->with('user')
+            ->withCount('votos')
+            ->withExists([
+                'votos as usuario_votou' => fn ($query) => $query->where('users.id', Auth::id()),
+            ])
+            ->orderByDesc('votos_count')
             ->latest()
             ->paginate(10);
 

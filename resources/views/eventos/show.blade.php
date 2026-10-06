@@ -45,6 +45,21 @@
                         <span>Status: <span class="badge bg-success">{{ $pergunta->status }}</span></span>
                         <span>{{ $pergunta->created_at->format('d/m/Y H:i') }}</span>
                     </div>
+                    <div class="d-flex align-items-center gap-3 mt-3">
+                        <span class="badge bg-primary">{{ $pergunta->votos_count }} votos</span>
+                        @auth
+                            <form action="{{ route('perguntas.votar', $pergunta) }}" method="POST">
+                                @csrf
+                                <button type="submit"
+                                        class="btn {{ $pergunta->usuario_votou ? 'btn-primary' : 'btn-outline-primary' }}"
+                                        aria-pressed="{{ $pergunta->usuario_votou ? 'true' : 'false' }}">
+                                    {{ $pergunta->usuario_votou ? 'Remover voto' : 'Votar' }}
+                                </button>
+                            </form>
+                        @else
+                            <a href="{{ route('login.create') }}" class="text-secondary small">Entre para votar</a>
+                        @endauth
+                    </div>
                 </div>
             </div>
         @empty

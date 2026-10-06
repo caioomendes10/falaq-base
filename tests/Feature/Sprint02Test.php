@@ -106,7 +106,7 @@ class Sprint02Test extends TestCase
                     && $perguntas->every(fn ($pergunta) => $pergunta->relationLoaded('user'));
             });
 
-        $consultasAutores = array_filter($queries, fn ($query) => str_contains($query['query'], '"users"'));
+        $consultasAutores = array_filter($queries, fn ($query) => str_starts_with($query['query'], 'select * from "users"'));
         $this->assertCount(1, $consultasAutores);
         $this->assertCount(4, $queries);
     }
